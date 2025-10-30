@@ -12,7 +12,7 @@ import (
 
 type SubService interface {
 	Create(ctx context.Context, s *model.Sub) error
-	Get(ctx context.Context, id int) (*model.Sub, error)
+	GetById(ctx context.Context, id int) (*model.Sub, error)
 	Update(ctx context.Context, s *model.Sub) error
 	Delete(ctx context.Context, id int) error
 	List(ctx context.Context, limit, offset int) ([]model.Sub, error)
@@ -31,7 +31,7 @@ func (s *subService) Create(ctx context.Context, sub *model.Sub) error {
 	return s.repository.Create(ctx, sub)
 }
 
-func (s *subService) Get(ctx context.Context, id int) (*model.Sub, error) {
+func (s *subService) GetById(ctx context.Context, id int) (*model.Sub, error) {
 	return s.repository.GetById(ctx, id)
 }
 
