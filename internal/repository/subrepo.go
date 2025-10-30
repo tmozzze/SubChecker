@@ -27,7 +27,7 @@ func NewSubRepository(pool *pgxpool.Pool) SubRepository {
 
 func (r *subRepository) Create(ctx context.Context, s *model.Sub) error {
 	var endDate any
-	if endDate != nil {
+	if s.EndDate != nil {
 		endDate = *s.EndDate
 	}
 
