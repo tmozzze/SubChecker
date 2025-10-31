@@ -1,0 +1,336 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "REST service for subscription aggregation",
+        "title": "SubChecker API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/subs": {
+            "get": {
+                "description": "Get paginated list of subscriptions",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subs"
+                ],
+                "summary": "List subscriptions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "limit (default 50)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "offset (default 0)",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Sub"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create subscription record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subs"
+                ],
+                "summary": "Create subscription",
+                "parameters": [
+                    {
+                        "description": "Subscription",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.createSubReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Sub"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subs/sum": {
+            "get": {
+                "description": "Sum total cost for period (inclusive months). Filters: user_id, service_name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subs"
+                ],
+                "summary": "Sum cost",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "MM-YYYY",
+                        "name": "start_month",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "MM-YYYY",
+                        "name": "end_month",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID",
+                        "name": "user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "service name",
+                        "name": "service_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subs/{id}": {
+            "get": {
+                "description": "Get subscription by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subs"
+                ],
+                "summary": "Get subscription by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subscription ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Sub"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update existing subscription by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subs"
+                ],
+                "summary": "Update subscription",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subscription ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated subscription",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.createSubReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Sub"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete subscription by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subs"
+                ],
+                "summary": "Delete subscription",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subscription ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "http.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "invalid request"
+                }
+            }
+        },
+        "http.createSubReq": {
+            "type": "object",
+            "required": [
+                "price",
+                "service_name",
+                "start_date",
+                "user_id"
+            ],
+            "properties": {
+                "end_date": {
+                    "description": "Optional",
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "service_name": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "description": "MM-YYYY",
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Sub": {
+            "type": "object",
+            "properties": {
+                "end_date": {
+                    "type": "string",
+                    "example": "2025-10-01T00:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "price": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "service_name": {
+                    "type": "string",
+                    "example": "Yandex Plus"
+                },
+                "start_date": {
+                    "type": "string",
+                    "example": "2025-07-01T00:00:00Z"
+                },
+                "user_id": {
+                    "type": "string",
+                    "example": "60601fee-2bf1-4721-ae6f-7636e79a0cba"
+                }
+            }
+        }
+    }
+}

@@ -12,10 +12,10 @@ import "time"
 */
 
 type Sub struct {
-	SubId       int        `db:"sub_id" json:"sub_id"`
-	ServiceName string     `json:"service_name" db:"service_name"`
-	Price       int        `json:"price" db:"price"`
-	UserId      string     `json:"user_id" db:"user_id"`
-	StartDate   time.Time  `json:"start_date" db:"start_date"`
-	EndDate     *time.Time `json:"end_date,omitempty" db:"end_date"`
+	SubId       int        `json:"id" example:"1"`
+	ServiceName string     `json:"service_name" example:"Yandex Plus"`
+	Price       int        `json:"price" example:"400"`
+	UserId      string     `json:"user_id" example:"60601fee-2bf1-4721-ae6f-7636e79a0cba"`
+	StartDate   time.Time  `json:"start_date" example:"2025-07-01T00:00:00Z"`
+	EndDate     *time.Time `json:"end_date,omitempty" example:"2025-10-01T00:00:00Z"`
 }
