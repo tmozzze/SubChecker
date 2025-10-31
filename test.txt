@@ -1,0 +1,37 @@
+post
+
+{
+  "service_name": "Yandex Plus",
+  "price": 400,
+  "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+  "start_date": "07-2025",
+  "end_date": "10-2025"
+}
+
+
+
+sum
+
+GET /subs/sum?start_month=07-2025&end_month=12-2025&user_id=60601fee-2bf1-4721-ae6f-7636e79a0cba
+
+
+
+
+
+
+
+
+put
+
+{
+  "service_name": "Netflix",
+  "price": 600,
+  "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+  "start_date": "07-2025",
+  "end_date": "12-2025"
+}
+
+
+
+
+

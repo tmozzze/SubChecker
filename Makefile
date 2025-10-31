@@ -4,8 +4,12 @@
 include .env
 export
 
+# Build binary
+build:
+	go mod download && go build -o ./bin/app ./cmd/app/main.go
+
 # Run docker-compose
-run: 
+run:
 	docker-compose up --build -d
 
 # Down docker-compose
@@ -34,8 +38,16 @@ migrate-down:
 
 # Show migration status
 migrate-status:
+	@echo "migrate status:"
 	migrate -path ./database/migrations -database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:$(POSTGRES_PORT)/$(POSTGRES_DB)?sslmode=disable" version
 
 # Rollback all migrations
 migrate-reset:
 	migrate -path ./database/migrations -database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:$(POSTGRES_PORT)/$(POSTGRES_DB)?sslmode=disable" down
+
+# Swagger docs gen
+swagger-gen:
+	swag init -g cmd/app/main.go -o docs
+
+# First start Service
+start-service: run

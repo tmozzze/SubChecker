@@ -2,7 +2,6 @@ package config
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -18,11 +17,14 @@ type Config struct {
 
 	// Server
 	ServerPort string
+
+	// Migrations
+	MigrationsDir string
 }
 
 func Load() (*Config, error) {
 	if err := godotenv.Load(); err != nil {
-		fmt.Println(".env not found. Skip")
+		return &Config{}, err
 	}
 
 	cfg := &Config{
@@ -35,6 +37,8 @@ func Load() (*Config, error) {
 
 		// SERVER
 		ServerPort: os.Getenv("SERVER_PORT"),
+
+		MigrationsDir: os.Getenv("MIGRATIONS_DIR"),
 	}
 
 	if cfg.DBUser == "" || cfg.DBPassword == "" {

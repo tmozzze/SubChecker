@@ -44,7 +44,7 @@ func parseMonth(s string) (time.Time, error) {
 // @Produce json
 // @Param body body createSubReq true "Subscription"
 // @Success 201 {object} model.Sub
-// @Failure 400 {object} gin.H
+// @Failure 400 {object} http.ErrorResponse
 // @Router /subs [post]
 func (h *SubHandler) CreateSub(c *gin.Context) {
 	var req createSubReq
@@ -103,8 +103,8 @@ type sumReq struct {
 // @Param end_month query string true "MM-YYYY"
 // @Param user_id query string false "UUID"
 // @Param service_name query string false "service name"
-// @Success 200 {object} gin.H
-// @Failure 400 {object} gin.H
+// @Success 200 {object} http.ErrorResponse
+// @Failure 400 {object} http.ErrorResponse
 // @Router /subs/sum [get]
 func (h *SubHandler) SumCost(c *gin.Context) {
 	var q sumReq
@@ -142,8 +142,8 @@ func (h *SubHandler) SumCost(c *gin.Context) {
 // @Produce json
 // @Param id path int true "Subscription ID"
 // @Success 200 {object} model.Sub
-// @Failure 400 {object} gin.H
-// @Failure 404 {object} gin.H
+// @Failure 400 {object} http.ErrorResponse
+// @Failure 404 {object} http.ErrorResponse
 // @Router /subs/{id} [get]
 func (h *SubHandler) GetSubById(c *gin.Context) {
 	idStr := c.Param("sub_id")
@@ -206,8 +206,8 @@ func (h *SubHandler) ListSubs(c *gin.Context) {
 // @Param id path int true "Subscription ID"
 // @Param body body createSubReq true "Updated subscription"
 // @Success 200 {object} model.Sub
-// @Failure 400 {object} gin.H
-// @Failure 404 {object} gin.H
+// @Failure 400 {object} http.ErrorResponse
+// @Failure 404 {object} http.ErrorResponse
 // @Router /subs/{id} [put]
 func (h *SubHandler) UpdateSub(c *gin.Context) {
 	idStr := c.Param("sub_id")
@@ -265,7 +265,7 @@ func (h *SubHandler) UpdateSub(c *gin.Context) {
 // @Produce json
 // @Param id path int true "Subscription ID"
 // @Success 204 {object} nil
-// @Failure 400 {object} gin.H
+// @Failure 400 {object} http.ErrorResponse
 // @Router /subs/{id} [delete]
 func (h *SubHandler) DeleteSub(c *gin.Context) {
 	idStr := c.Param("sub_id")

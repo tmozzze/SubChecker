@@ -1,0 +1,227 @@
+basePath: /
+definitions:
+  http.ErrorResponse:
+    properties:
+      error:
+        example: invalid request
+        type: string
+    type: object
+  http.createSubReq:
+    properties:
+      end_date:
+        description: Optional
+        type: string
+      price:
+        minimum: 0
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        description: MM-YYYY
+        type: string
+      user_id:
+        type: string
+    required:
+    - price
+    - service_name
+    - start_date
+    - user_id
+    type: object
+  model.Sub:
+    properties:
+      end_date:
+        example: "2025-10-01T00:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      price:
+        example: 400
+        type: integer
+      service_name:
+        example: Yandex Plus
+        type: string
+      start_date:
+        example: "2025-07-01T00:00:00Z"
+        type: string
+      user_id:
+        example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST service for subscription aggregation
+  title: SubChecker API
+  version: "1.0"
+paths:
+  /subs:
+    get:
+      description: Get paginated list of subscriptions
+      parameters:
+      - description: limit (default 50)
+        in: query
+        name: limit
+        type: integer
+      - description: offset (default 0)
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Sub'
+            type: array
+      summary: List subscriptions
+      tags:
+      - subs
+    post:
+      consumes:
+      - application/json
+      description: Create subscription record
+      parameters:
+      - description: Subscription
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/http.createSubReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Sub'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Create subscription
+      tags:
+      - subs
+  /subs/{id}:
+    delete:
+      description: Delete subscription by ID
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Delete subscription
+      tags:
+      - subs
+    get:
+      description: Get subscription by its ID
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Sub'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Get subscription by ID
+      tags:
+      - subs
+    put:
+      consumes:
+      - application/json
+      description: Update existing subscription by ID
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated subscription
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/http.createSubReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Sub'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Update subscription
+      tags:
+      - subs
+  /subs/sum:
+    get:
+      consumes:
+      - application/json
+      description: 'Sum total cost for period (inclusive months). Filters: user_id,
+        service_name'
+      parameters:
+      - description: MM-YYYY
+        in: query
+        name: start_month
+        required: true
+        type: string
+      - description: MM-YYYY
+        in: query
+        name: end_month
+        required: true
+        type: string
+      - description: UUID
+        in: query
+        name: user_id
+        type: string
+      - description: service name
+        in: query
+        name: service_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Sum cost
+      tags:
+      - subs
+swagger: "2.0"
